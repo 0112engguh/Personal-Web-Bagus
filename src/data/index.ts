@@ -75,24 +75,10 @@ export const education: Experience[] = [
 export const certifications: Certification[] = [
   {
     id: 'cert-1',
-    title: 'React - The Complete Guide',
-    issuer: 'Udemy',
-    date: 'Mar 2024',
-    url: '#',
-  },
-  {
-    id: 'cert-2',
-    title: 'JavaScript Algorithms & Data Structures',
-    issuer: 'freeCodeCamp',
-    date: 'Nov 2023',
-    url: '#',
-  },
-  {
-    id: 'cert-3',
-    title: 'Responsive Web Design',
-    issuer: 'freeCodeCamp',
-    date: 'Aug 2023',
-    url: '#',
+    title: 'Databases - MySql',
+    issuer: 'Certiport',
+    date: 'May 2023',
+    url: '/Certified-Databases-Bagus.pdf',
   },
 ];
 

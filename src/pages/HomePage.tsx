@@ -3,7 +3,7 @@ import { Header } from '@/components/Header';
 import { Overview } from '@/components/Overview';
 import { Projects } from '@/components/Projects';
 import { Experience } from '@/components/Experience';
-// import { Certifications } from '@/components/Certifications';
+import { Certifications } from '@/components/Certifications';
 import { Skills } from '@/components/Skills';
 import { PhotographyPreview } from '@/components/photography/PhotographyPreview';
 import { Footer } from '@/components/Footer';
@@ -21,8 +21,8 @@ export function HomePage() {
       <Experience />
       <Divider />
       <PhotographyPreview />
-      {/* <Divider /> */}
-      {/* <Certifications /> */}
+      <Divider />
+      <Certifications />
       <Divider />
       <Skills />
       <Footer />
