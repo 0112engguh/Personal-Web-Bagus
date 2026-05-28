@@ -1,21 +1,46 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { photos, photoCategories } from '@/data/photos';
-import type { Photo } from '@/data/photos';
+import { usePhotos, type PhotoRow } from '@/hooks/useSupabase';
 import { PhotoCard } from '@/components/photography/PhotoCard';
 import { Lightbox } from '@/components/photography/Lightbox';
 import { Animate } from '@/components/ui/Animate';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { cn } from '@/lib/utils';
 
+const photoCategories = [
+  { id: 'all', label: 'All' },
+  { id: 'street', label: 'Street' },
+  { id: 'architecture', label: 'Architecture' },
+  { id: 'nature', label: 'Nature' },
+  { id: 'portrait', label: 'Portrait' },
+  { id: 'abstract', label: 'Abstract' },
+] as const;
+
+function toPhoto(p: PhotoRow) {
+  return {
+    id: p.id,
+    src: p.src,
+    thumb: p.thumb ?? p.src,
+    alt: p.alt,
+    category: p.category,
+    location: p.location ?? undefined,
+    year: p.year,
+    featured: p.featured,
+  };
+}
+
 export function GalleryPage() {
+  const { data: allPhotos, loading } = usePhotos();
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const filtered = useMemo<Photo[]>(() => {
+  const photos = allPhotos ?? [];
+
+  const filtered = useMemo(() => {
     if (activeCategory === 'all') return photos;
     return photos.filter((p) => p.category === activeCategory);
-  }, [activeCategory]);
+  }, [activeCategory, photos]);
 
   return (
     <div className="min-h-screen bg-bg text-accent">
@@ -52,7 +77,10 @@ export function GalleryPage() {
         <Animate variant="fade-up" delay={100}>
           <div className="flex flex-wrap gap-2 mb-8">
             {photoCategories.map((cat) => {
-              const count = cat.id === 'all' ? photos.length : photos.filter((p) => p.category === cat.id).length;
+              const count =
+                cat.id === 'all'
+                  ? photos.length
+                  : photos.filter((p) => p.category === cat.id).length;
               return (
                 <button
                   key={cat.id}
@@ -65,10 +93,12 @@ export function GalleryPage() {
                   )}
                 >
                   {cat.label}
-                  <span className={cn(
-                    'ml-1.5 text-[10px] opacity-60',
-                    activeCategory === cat.id ? 'text-bg' : 'text-muted'
-                  )}>
+                  <span
+                    className={cn(
+                      'ml-1.5 text-[10px] opacity-60',
+                      activeCategory === cat.id ? 'text-bg' : 'text-muted'
+                    )}
+                  >
                     {count}
                   </span>
                 </button>
@@ -81,29 +111,40 @@ export function GalleryPage() {
           className="columns-2 sm:columns-3 gap-3 space-y-3"
           style={{ columnFill: 'balance' }}
         >
-          {filtered.map((photo, i) => (
-            <Animate
-              key={photo.id}
-              variant="fade-up"
-              delay={Math.min(i * 40, 300)}
-              className="break-inside-avoid mb-3"
-            >
-              <PhotoCard
-                photo={photo}
-                onClick={() => setLightboxIndex(i)}
-                className={cn(
-                  'w-full',
-                  // alternate heights for masonry feel
-                  i % 5 === 0 ? 'aspect-[3/4]' :
-                  i % 5 === 2 ? 'aspect-[4/5]' :
-                  'aspect-square'
-                )}
-              />
-            </Animate>
-          ))}
+          {loading
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <Skeleton
+                  key={i}
+                  className={cn(
+                    'break-inside-avoid mb-3 w-full rounded-lg',
+                    i % 3 === 0 ? 'h-48' : i % 3 === 1 ? 'h-56' : 'h-44'
+                  )}
+                />
+              ))
+            : filtered.map((photo, i) => (
+                <Animate
+                  key={photo.id}
+                  variant="fade-up"
+                  delay={Math.min(i * 40, 300)}
+                  className="break-inside-avoid mb-3"
+                >
+                  <PhotoCard
+                    photo={toPhoto(photo)}
+                    onClick={() => setLightboxIndex(i)}
+                    className={cn(
+                      'w-full',
+                      i % 5 === 0
+                        ? 'aspect-[3/4]'
+                        : i % 5 === 2
+                          ? 'aspect-[4/5]'
+                          : 'aspect-square'
+                    )}
+                  />
+                </Animate>
+              ))}
         </div>
 
-        {filtered.length === 0 && (
+        {!loading && filtered.length === 0 && (
           <div className="text-center py-20 text-muted font-mono text-sm">
             No photos in this category yet.
           </div>
@@ -118,12 +159,14 @@ export function GalleryPage() {
 
       {lightboxIndex !== null && (
         <Lightbox
-          photos={filtered}
+          photos={filtered.map(toPhoto)}
           currentIndex={lightboxIndex}
           onClose={() => setLightboxIndex(null)}
           onPrev={() => setLightboxIndex((i) => Math.max(0, (i ?? 0) - 1))}
           onNext={() =>
-            setLightboxIndex((i) => Math.min(filtered.length - 1, (i ?? 0) + 1))
+            setLightboxIndex((i) =>
+              Math.min(filtered.length - 1, (i ?? 0) + 1)
+            )
           }
         />
       )}
