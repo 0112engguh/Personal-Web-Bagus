@@ -78,14 +78,14 @@ export function ExperiencesAdmin() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-display text-accent mb-1">Experiences</h1>
-          <p className="text-subtle text-sm font-mono">Work history and education</p>
+          <h1 className="text-2xl sm:text-3xl font-display text-accent mb-1">Experiences</h1>
+          <p className="text-subtle text-xs sm:text-sm font-mono">Work history and education</p>
         </div>
         <button
           onClick={handleAddNew}
-          className="flex items-center gap-2 bg-accent text-bg px-4 py-2 rounded-xl text-xs font-mono hover:bg-highlight transition-colors"
+          className="flex items-center justify-center gap-2 bg-accent text-bg px-4 py-2.5 rounded-xl text-xs font-mono hover:bg-highlight transition-colors w-full sm:w-auto"
         >
           <Plus className="w-4 h-4" />
           Add Experience
@@ -222,7 +222,7 @@ function ExperienceItem({ exp, onEdit, onDelete }: { exp: ExperienceRow, onEdit:
           <p className="text-[10px] font-mono text-muted uppercase tracking-wider">{exp.role} · {exp.period}</p>
         </div>
       </div>
-      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="flex items-center gap-1 sm:gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
         <button 
           onClick={() => onEdit(exp)}
           className="p-2 rounded-lg hover:bg-white/5 text-muted hover:text-highlight transition-colors"

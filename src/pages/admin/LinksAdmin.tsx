@@ -65,7 +65,7 @@ export function LinksAdmin() {
           {skills.map(skill => (
             <div key={skill.id} className="flex items-center justify-between p-3 rounded-xl border border-border bg-surface/30 group">
               <span className="text-xs font-mono text-accent">{skill.name}</span>
-              <button onClick={() => handleDelete('skills', skill.id)} className="opacity-0 group-hover:opacity-100 text-muted hover:text-red-400 transition-all">
+              <button onClick={() => handleDelete('skills', skill.id)} className="lg:opacity-0 lg:group-hover:opacity-100 text-muted hover:text-red-400 transition-all">
                 <Trash2 className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -90,7 +90,7 @@ export function LinksAdmin() {
                 <span className="text-xs font-mono text-accent">{link.label}</span>
                 <span className="text-[10px] font-mono text-muted truncate max-w-[150px]">{link.url}</span>
               </div>
-              <button onClick={() => handleDelete('social_links', link.id)} className="opacity-0 group-hover:opacity-100 text-muted hover:text-red-400 transition-all">
+              <button onClick={() => handleDelete('social_links', link.id)} className="lg:opacity-0 lg:group-hover:opacity-100 text-muted hover:text-red-400 transition-all">
                 <Trash2 className="w-3.5 h-3.5" />
               </button>
             </div>

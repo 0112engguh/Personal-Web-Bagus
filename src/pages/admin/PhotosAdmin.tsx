@@ -77,14 +77,14 @@ export function PhotosAdmin() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-display text-accent mb-1">Photography</h1>
-          <p className="text-subtle text-sm font-mono">Manage your gallery frames</p>
+          <h1 className="text-2xl sm:text-3xl font-display text-accent mb-1">Photography</h1>
+          <p className="text-subtle text-xs sm:text-sm font-mono">Manage your gallery frames</p>
         </div>
         <button
           onClick={handleAddNew}
-          className="flex items-center gap-2 bg-accent text-bg px-4 py-2 rounded-xl text-xs font-mono hover:bg-highlight transition-colors"
+          className="flex items-center justify-center gap-2 bg-accent text-bg px-4 py-2.5 rounded-xl text-xs font-mono hover:bg-highlight transition-colors w-full sm:w-auto"
         >
           <Plus className="w-4 h-4" />
           Add New Photo
@@ -225,7 +225,7 @@ export function PhotosAdmin() {
                 </div>
               )}
 
-              <div className="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute top-2 right-2 flex flex-col gap-1 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                 <button 
                   onClick={() => handleEdit(photo)}
                   className="p-1.5 rounded-lg bg-bg/80 backdrop-blur-md text-muted hover:text-highlight transition-colors border border-white/5"

@@ -91,8 +91,8 @@ export function InfoAdmin() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-display text-accent mb-1">Personal Info</h1>
-        <p className="text-subtle text-sm font-mono">Manage your public identity</p>
+        <h1 className="text-2xl sm:text-3xl font-display text-accent mb-1">Personal Info</h1>
+        <p className="text-subtle text-xs sm:text-sm font-mono">Manage your public identity</p>
       </div>
 
       <form onSubmit={handleSave} className="space-y-8">
@@ -175,11 +175,11 @@ export function InfoAdmin() {
 
           <div>
             <label className="block text-[10px] font-mono text-muted uppercase tracking-wider mb-2">Avatar</label>
-            <div className="flex gap-4 items-start">
+            <div className="flex flex-col sm:flex-row gap-4 items-start">
               {data.avatar_url && (
-                <img src={data.avatar_url} alt="Avatar Preview" className="w-12 h-12 rounded-full object-cover border border-border" />
+                <img src={data.avatar_url} alt="Avatar Preview" className="w-12 h-12 rounded-full object-cover border border-border shrink-0" />
               )}
-              <div className="flex-1">
+              <div className="w-full">
                 <input
                   type="text"
                   value={data.avatar_url || ''}
