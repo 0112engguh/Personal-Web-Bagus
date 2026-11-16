@@ -111,3 +111,32 @@ create policy "Public read certifications" on certifications for select using (t
 create policy "Public read skills" on skills for select using (true);
 create policy "Public read social_links" on social_links for select using (true);
 create policy "Public read photos" on photos for select using (true);
+
+-- Allow the logged-in admin to write content
+create policy "Auth write personal_info" on personal_info for all to authenticated using (true) with check (true);
+create policy "Auth write projects" on projects for all to authenticated using (true) with check (true);
+create policy "Auth write experiences" on experiences for all to authenticated using (true) with check (true);
+create policy "Auth write certifications" on certifications for all to authenticated using (true) with check (true);
+create policy "Auth write skills" on skills for all to authenticated using (true) with check (true);
+create policy "Auth write social_links" on social_links for all to authenticated using (true) with check (true);
+create policy "Auth write photos" on photos for all to authenticated using (true) with check (true);
+
+-- ============================================
+-- Storage: public bucket for local file uploads
+-- (avatar, CV, photos, project images)
+-- ============================================
+insert into storage.buckets (id, name, public)
+values ('uploads', 'uploads', true)
+on conflict (id) do nothing;
+
+create policy "Public read uploads" on storage.objects
+  for select using (bucket_id = 'uploads');
+
+create policy "Auth insert uploads" on storage.objects
+  for insert to authenticated with check (bucket_id = 'uploads');
+
+create policy "Auth update uploads" on storage.objects
+  for update to authenticated using (bucket_id = 'uploads');
+
+create policy "Auth delete uploads" on storage.objects
+  for delete to authenticated using (bucket_id = 'uploads');

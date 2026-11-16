@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Plus, Pencil, Trash2, X, Save, RefreshCw } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Save, RefreshCw, Upload } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { uploadFile } from '@/lib/upload';
 import { PhotoRow } from '@/hooks/useSupabase';
 
 export function PhotosAdmin() {
@@ -8,6 +9,7 @@ export function PhotosAdmin() {
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<Partial<PhotoRow>>({});
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     fetchPhotos();
@@ -34,7 +36,6 @@ export function PhotosAdmin() {
     setEditingId('new');
     setFormData({
       src: '',
-      thumb: '',
       alt: '',
       category: 'street',
       location: '',
@@ -43,6 +44,21 @@ export function PhotosAdmin() {
       sort_order: photos.length + 1,
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const url = await uploadFile(file);
+      setFormData(prev => ({ ...prev, src: url, thumb: url }));
+    } catch (err) {
+      alert((err as Error).message);
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -110,17 +126,13 @@ export function PhotosAdmin() {
                 value={formData.src || ''}
                 onChange={e => setFormData({ ...formData, src: e.target.value })}
                 className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:border-accent outline-none"
-                placeholder="https://..."
+                placeholder="https://... or upload below"
               />
-            </div>
-            <div>
-              <label className="block text-[10px] font-mono text-muted uppercase tracking-wider mb-2">Thumbnail URL (Optional)</label>
-              <input
-                value={formData.thumb || ''}
-                onChange={e => setFormData({ ...formData, thumb: e.target.value })}
-                className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm focus:border-accent outline-none"
-                placeholder="https://..."
-              />
+              <label className="mt-2 flex items-center justify-center gap-2 px-4 py-2 border border-dashed border-border rounded-xl text-[10px] font-mono text-muted cursor-pointer hover:border-accent hover:text-accent transition-all">
+                <Upload className="w-3 h-3" />
+                {uploading ? 'Uploading...' : 'Upload from Local (thumbnail generated automatically)'}
+                <input type="file" accept="image/*" className="hidden" onChange={handleFileUpload} disabled={uploading} />
+              </label>
             </div>
             <div>
               <label className="block text-[10px] font-mono text-muted uppercase tracking-wider mb-2">Alt Text</label>

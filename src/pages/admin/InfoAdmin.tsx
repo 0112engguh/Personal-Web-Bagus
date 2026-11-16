@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Save, RefreshCw, User, MapPin, Type, Mail, FileText, CheckCircle2, Upload } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { uploadFile } from '@/lib/upload';
 import { PersonalInfoRow } from '@/hooks/useSupabase';
 import { cn } from '@/lib/utils';
 
@@ -17,7 +18,7 @@ export function InfoAdmin() {
 
   const fetchInfo = async () => {
     setLoading(true);
-    const { data: result, error } = await supabase
+    const { data: result } = await supabase
       .from('personal_info')
       .select('*')
       .single();
@@ -31,28 +32,16 @@ export function InfoAdmin() {
     if (!file) return;
 
     setUploading(field);
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${field}-${Math.random()}.${fileExt}`;
-    const filePath = `${fileName}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from('uploads')
-      .upload(filePath, file);
-
-    if (uploadError) {
-      setMessage({ type: 'error', text: uploadError.message });
+    try {
+      const url = await uploadFile(file);
+      setData(prev => ({ ...prev, [field]: url }));
+      setMessage({ type: 'success', text: `${field === 'avatar_url' ? 'Avatar' : 'CV'} uploaded! Remember to save changes.` });
+      setTimeout(() => setMessage(null), 3000);
+    } catch (err) {
+      setMessage({ type: 'error', text: (err as Error).message });
+    } finally {
       setUploading(null);
-      return;
     }
-
-    const { data: { publicUrl } } = supabase.storage
-      .from('uploads')
-      .getPublicUrl(filePath);
-
-    setData({ ...data, [field]: publicUrl });
-    setUploading(null);
-    setMessage({ type: 'success', text: `${field === 'avatar_url' ? 'Avatar' : 'CV'} uploaded! Remember to save changes.` });
-    setTimeout(() => setMessage(null), 3000);
   };
 
   const handleSave = async (e: React.FormEvent) => {
