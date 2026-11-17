@@ -4,8 +4,44 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Junior Web Developer & Photography Enthusiast" />
+    <meta name="color-scheme" content="dark light" />
+    <script>
+      try {
+        if (localStorage.getItem('theme') === 'light') {
+          document.documentElement.classList.add('light');
+          document.documentElement.setAttribute('data-theme', 'light');
+          document.documentElement.style.colorScheme = 'light';
+        }
+      } catch (e) {}
+    </script>
+    <meta name="description" content="Bagus Wicaksana — Informatics student and web developer building clean, functional interfaces. Also a photography enthusiast." />
     <title>Bagus Wicaksana — Portfolio</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Bagus Wicaksana — Portfolio" />
+    <meta property="og:description" content="Informatics student and web developer building clean, functional interfaces. Also a photography enthusiast." />
+    <meta property="og:image" content="/ProfileUnformal.jpeg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Bagus Wicaksana — Portfolio" />
+    <meta name="twitter:description" content="Informatics student and web developer building clean, functional interfaces. Also a photography enthusiast." />
+    <meta name="twitter:image" content="/ProfileUnformal.jpeg" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Bagus Wicaksana",
+        "jobTitle": "Junior Web Developer",
+        "description": "Informatics student and web developer, also a photography enthusiast.",
+        "email": "baguswicaksana217@gmail.com",
+        "address": { "@type": "PostalAddress", "addressLocality": "Depok", "addressCountry": "ID" },
+        "sameAs": [
+          "https://github.com/0112engguh",
+          "https://www.linkedin.com/in/bagus-wicaksana/",
+          "https://www.instagram.com/engguuh/"
+        ]
+      }
+    </script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

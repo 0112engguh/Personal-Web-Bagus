@@ -21,7 +21,7 @@ export function PhotographyPreview() {
           <SectionTitle className="mb-0">Photography</SectionTitle>
           <Link
             to="/photography"
-            className="group inline-flex items-center gap-1.5 text-xs mb-8 font-mono text-muted hover:text-accent transition-colors"
+            className="group inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors"
           >
             View all
             <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

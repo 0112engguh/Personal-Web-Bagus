@@ -1,23 +1,30 @@
 import { useEffect, useState } from 'react';
 import { usePersonalInfo } from '@/hooks/useSupabase';
 import { formatTime } from '@/lib/utils';
-import { Download, Mail, Circle } from 'lucide-react';
+import { FileText, Mail, Circle } from 'lucide-react';
 import { Skeleton, SkeletonText } from '@/components/ui/Skeleton';
 
 export function Header() {
   const { data: info, loading } = usePersonalInfo();
   const [time, setTime] = useState(new Date());
   const [mounted, setMounted] = useState(false);
+  const [roleIndex, setRoleIndex] = useState(0);
+
+  const roles = [info?.subtitle || 'Web Developer', 'Full Stack Developer', 'Creative Developer'];
 
   useEffect(() => {
     setMounted(true);
     const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    const roleTimer = setInterval(() => setRoleIndex(i => (i + 1) % 3), 3000);
+    return () => {
+      clearInterval(timer);
+      clearInterval(roleTimer);
+    };
   }, []);
 
   return (
     <header
-      className="pt-12 pb-10 transition-all duration-700 ease-out"
+      className="pt-12 transition-all duration-700 ease-out"
       style={{
         opacity: mounted ? 1 : 0,
         transform: mounted ? 'translateY(0)' : 'translateY(16px)',
@@ -82,7 +89,9 @@ export function Header() {
               <h1 className="text-3xl sm:text-4xl font-display font-normal text-accent leading-tight mb-1">
                 {info?.name}
               </h1>
-              <p className="text-sm text-muted font-mono">{info?.subtitle}</p>
+              <p className="h-5 overflow-hidden text-sm text-muted font-mono">
+                <span key={roleIndex} className="block animate-fade-up">{roles[roleIndex]}</span>
+              </p>
 
               <div
                 className="flex items-center gap-3 mt-5 transition-all duration-700 delay-200"
@@ -96,8 +105,8 @@ export function Header() {
                   download
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-surface text-accent text-sm font-mono hover:bg-white/5 hover:border-white/20 active:scale-95 transition-all duration-200"
                 >
-                  <Download className="w-3.5 h-3.5" />
-                  Download CV
+                  <FileText className="w-3.5 h-3.5" />
+                  Resume
                 </a>
                 <a
                   href={`mailto:${info?.email}`}

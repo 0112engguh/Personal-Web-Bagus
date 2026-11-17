@@ -9,7 +9,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="pt-10 pb-12 mt-4">
+    <footer className="pb-8">
       <div className="space-y-1 mb-10">
         {loadingLinks ? (
           Array.from({ length: 4 }).map((_, i) => (

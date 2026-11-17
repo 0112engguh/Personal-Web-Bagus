@@ -1,5 +1,6 @@
 import { Layout } from '@/components/Layout';
 import { Header } from '@/components/Header';
+import { GitHubActivity } from '@/components/GitHubActivity';
 import { Overview } from '@/components/Overview';
 import { Projects } from '@/components/Projects';
 import { Experience } from '@/components/Experience';
@@ -7,25 +8,23 @@ import { Experience } from '@/components/Experience';
 import { Skills } from '@/components/Skills';
 import { PhotographyPreview } from '@/components/photography/PhotographyPreview';
 import { Footer } from '@/components/Footer';
-import { Divider } from '@/components/ui/Divider';
 
 export function HomePage() {
   return (
     <Layout>
-      <Header />
-      <Divider />
-      <Overview />
-      <Divider />
-      <Projects />
-      <Divider />
-      <Experience />
-      <Divider />
-      <PhotographyPreview />
-      {/* <Divider /> */}
-      {/* <Certifications /> */}
-      <Divider />
-      <Skills />
-      <Footer />
+      <div className="space-y-16">
+        <section id="home"><Header /></section>
+        <GitHubActivity />
+        <section id="about"><Overview /></section>
+        <section id="work" className="space-y-12">
+          <Projects />
+          <Experience />
+          <Skills />
+        </section>
+        <section id="photos"><PhotographyPreview /></section>
+        {/* <Certifications /> */}
+        <div id="contact"><Footer /></div>
+      </div>
     </Layout>
   );
 }
